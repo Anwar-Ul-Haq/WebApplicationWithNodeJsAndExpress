@@ -17,9 +17,12 @@ app.use(morgan('combined'));
 
 app.use(express.static(path.join(__dirname, '/public/')));
 
+app.set('views', './src/views');
+app.set('view engine', 'ejs');
+
 app.get('/', (req, res) => {
 
-    res.send('Hello from my app')
+    res.render('index', { title: 'Anwar demo site', data:['a','b','c']});
     
 });
 
