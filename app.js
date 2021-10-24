@@ -8,7 +8,12 @@ const morgan = require('morgan');
 
 const path = require('path');
 
-const PORT = process.env.PORT ||3000;
+
+const PORT = process.env.PORT || 3000;
+
+
+
+const sessionsRouter= require('./src/routers/sessionsRouter')
 
 
 const app = express();
@@ -19,6 +24,10 @@ app.use(express.static(path.join(__dirname, '/public/')));
 
 app.set('views', './src/views');
 app.set('view engine', 'ejs');
+
+
+
+app.use('/sessions', sessionsRouter)
 
 app.get('/', (req, res) => {
 
