@@ -1,22 +1,33 @@
-
 const express = require('express');
+const debug = require('debug')('app:sessionRouter');
+const { MongoClient, ObjectID } = require('mongodb');
+
+
+
 const sessionsRouter = express.Router();
-const sessions = require('../data/sessions.json')
 
-sessionsRouter.route('/')
-    .get((req, res) => {
-        res.render('sessions', {
-            sessions
-        });
-    })
-sessionsRouter.route('/:id')
-    .get((req, res) => {
-        const id = req.params.id;
+sessionsRouter.route('/').get((req, res) => {
+    const url = 'mongodb+srv://dbUser:rXqzbdZlEvcHhkCV@cluster0.dwhvx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+    const dbName = 'globomantics';
 
-        res.render('session', {
-            session: sessions[id],
-        });
-    });
+  (async function mongo() {
+    let client;
+    try {
+      client = await MongoClient.connect(url);
+      debug('Connected to the mongo DB');
+
+      const db = client.db(dbName);
+
+      const sessions = await db.collection('sessions').find().toArray();
+
+      res.render('sessions', { sessions });
+    } catch (error) {
+      debug(error.stack);
+    }
+    client.close();
+  })();
+});
+
 
 
 module.exports = sessionsRouter;
