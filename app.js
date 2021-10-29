@@ -13,7 +13,8 @@ const PORT = process.env.PORT || 3000;
 
 
 
-const sessionsRouter= require('./src/routers/sessionsRouter')
+const sessionsRouter = require('./src/routers/sessionsRouter');
+const adminRouter = require('./src/routers/adminRouter');
 
 
 const app = express();
@@ -27,7 +28,9 @@ app.set('view engine', 'ejs');
 
 
 
-app.use('/sessions', sessionsRouter)
+app.use('/sessions', sessionsRouter);
+app.use('/admin', adminRouter);
+
 
 app.get('/', (req, res) => {
 
